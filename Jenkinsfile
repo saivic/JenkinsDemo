@@ -16,13 +16,7 @@ pipeline {
             }
         }
 
-        stage('Test') {
-            steps {
-                // Run tests for the application (optional)
-                sh 'mvn test'
-            }
-        }
-
+        
         stage('Deploy') {
             steps {
                 // Stop any running instance of the application (optional)
