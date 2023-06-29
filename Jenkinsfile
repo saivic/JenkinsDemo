@@ -12,14 +12,14 @@ pipeline {
         stage('Build') {
             steps {
                 // Build the Spring Boot application using Maven
-                sh 'mvn clean install'
+                bat 'mvn clean install'
             }
         }
 
         
         stage('Deploy') {
             steps {
-            	sh 'start java -jar target/JenkinsDemo.jar'
+            	bat 'start java -jar C:/Users/Administrator/Documents/workspace-spring-tool-suite-4-4.19.0.RELEASE/JenkinsDemo/target/JenkinsDemo-0.0.1-SNAPSHOT.jar'
             }
         }
     }
