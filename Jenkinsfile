@@ -1,18 +1,42 @@
-node {
-  stage("Clone the project") {
-    git branch: 'main', url: 'https://github.com/saivic/JenkinsDemo.git'
-  }
+pipeline {
+    agent any
 
-  stage("Compilation") {
-    sh "./mvnw clean install -DskipTests"
-  }
+    stages {
+        stage('Checkout') {
+            steps {
+                // Checkout the source code from the repository
+                git 'https://github.com/saivic/JenkinsDemo.git'
+            }
+        }
 
-  stage("Tests and Deployment") {
-    stage("Runing unit tests") {
-      sh "./mvnw test -Punit"
+        stage('Build') {
+            steps {
+                // Build the Spring Boot application using Maven
+                sh 'mvn clean package'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                // Run tests for the application (optional)
+                sh 'mvn test'
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                // Stop any running instance of the application (optional)
+		        sh 'kill $(lsof -t -i:8086)'
+		
+		        // Start the Spring Boot application
+		        sh 'java -jar target/JenkinsDemo.jar &'
+		
+		        // Wait for the application to start
+		        sh 'sleep 10'
+		
+		        // Stop the application after the tests (optional)
+		        sh 'kill $(lsof -t -i:8086)'
+            }
+        }
     }
-    stage("Deployment") {
-      sh 'nohup ./mvnw spring-boot:run -Dserver.port=8001 &'
-    }
-  }
 }
