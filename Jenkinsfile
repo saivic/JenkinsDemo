@@ -12,7 +12,7 @@ pipeline {
         stage('Build') {
             steps {
                 // Build the Spring Boot application using Maven
-                bat 'mvn clean install'
+                bat 'mvn clean install -X'
             }
         }
 
